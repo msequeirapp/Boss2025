@@ -6,36 +6,73 @@
  */
 
 export function optimizeVideos() {
-  const videos = document.querySelectorAll('video');
-  
-  videos.forEach(video => {
-    // Check if on mobile
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // Wait a short moment to ensure DOM is fully processed
+  setTimeout(() => {
+    const videos = document.querySelectorAll('video');
+    console.log('Found videos:', videos.length);
     
-    // Apply mobile-specific optimizations
-    if (isMobile) {
-      // Use lower resolution or reduce quality for mobile
-      video.setAttribute('playsinline', '');
-      video.setAttribute('preload', 'auto');
-      
-      // Ensure video can play on mobile
-      document.addEventListener('touchstart', () => {
-        video.play().catch(error => {
-          console.log('Mobile video playback error:', error);
-          handleVideoError(video);
-        });
-      }, { once: true });
+    // Special handling for hero video - direct access
+    const heroVideo = document.getElementById('hero-video');
+    if (heroVideo) {
+      console.log('Hero video found - applying special handling');
+      forceVideoPlay(heroVideo);
     }
     
-    // Add error handling
-    video.addEventListener('error', () => handleVideoError(video));
-    
-    // Force play attempt
-    video.play().catch(error => {
-      console.log('Video autoplay error:', error);
-      handleVideoError(video);
+    videos.forEach(video => {
+      // Check if on mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      // Log video source for debugging
+      const sources = video.querySelectorAll('source');
+      sources.forEach(source => {
+        console.log('Video source:', source.src);
+      });
+      
+      // Apply mobile-specific optimizations
+      if (isMobile) {
+        // Use lower resolution or reduce quality for mobile
+        video.setAttribute('playsinline', '');
+        video.setAttribute('preload', 'auto');
+        
+        // Ensure video can play on mobile
+        document.addEventListener('touchstart', () => {
+          forceVideoPlay(video);
+        }, { once: true });
+      }
+      
+      // Add error handling
+      video.addEventListener('error', () => handleVideoError(video));
+      
+      // Force play attempt
+      forceVideoPlay(video);
     });
-  });
+  }, 500); // 500ms delay to ensure DOM is ready
+}
+
+function forceVideoPlay(video) {
+  // Make sure video is properly loaded
+  if (video.readyState === 0) {
+    video.load();
+  }
+  
+  // Force play with multiple attempts
+  const playAttempt = setInterval(() => {
+    video.play().then(() => {
+      console.log('Video playback started successfully');
+      clearInterval(playAttempt);
+    }).catch(error => {
+      console.log('Video playback attempt failed:', error);
+      // After several attempts, use fallback if still failing
+      if (video.dataset.attempts > 3) {
+        handleVideoError(video);
+        clearInterval(playAttempt);
+      }
+      video.dataset.attempts = (parseInt(video.dataset.attempts || '0') + 1).toString();
+    });
+  }, 1000);
+  
+  // Clear interval after max 5 seconds regardless
+  setTimeout(() => clearInterval(playAttempt), 5000);
 }
 
 function handleVideoError(video) {
