@@ -133,6 +133,39 @@ body {
   animation: pulse-soft 4s ease-in-out infinite;
 }
 
+/* Video fallback for when video fails to load */
+.video-fallback {
+  background-image: url('/assets/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Fix for service cards to ensure consistent height */
+@media screen and (min-width: 768px) {
+  .grid-cols-2 > *, .grid-cols-3 > * {
+    display: flex;
+  }
+  
+  .grid-cols-2 > * > *, .grid-cols-3 > * > * {
+    height: 100%;
+  }
+}
+
+/* Optimize video loading for mobile */
+@media screen and (max-width: 767px) {
+  video {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Ensure service cards have consistent height on mobile */
+  .grid-cols-1 > * {
+    min-height: 200px;
+    margin-bottom: 1rem;
+  }
+}
+
 /* Gradient border */
 .gradient-border {
   position: relative;

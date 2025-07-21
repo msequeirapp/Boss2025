@@ -33,25 +33,27 @@ function ServiceCard({ icon, title, description, longDescription, price, delay, 
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay }}
-        className="relative group cursor-pointer"
+        className="relative group cursor-pointer h-full"
         onClick={() => setIsOpen(true)}
       >
-        <Card className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-melody-fuchsia/30 transition-all duration-300 overflow-hidden">
-          <CardContent className="p-6">
+        <Card className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-melody-fuchsia/30 transition-all duration-300 overflow-hidden h-full flex flex-col">
+          <CardContent className="p-6 flex flex-col h-full">
             {/* Background glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-melody-purple/0 via-melody-fuchsia/0 to-melody-purple/0 group-hover:from-melody-purple/10 group-hover:via-melody-fuchsia/10 group-hover:to-melody-purple/10 transition-all duration-500"></div>
             
             {/* Icon */}
-            <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center mb-4 group-hover:bg-melody-fuchsia/20 transition-colors text-melody-fuchsia">
+            <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center mb-4 group-hover:bg-melody-fuchsia/20 transition-colors text-melody-fuchsia shrink-0">
               {icon}
             </div>
             
-            {/* Content */}
-            <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-white/70">{description}</p>
+            {/* Content - using flex-grow to take available space */}
+            <div className="flex-grow flex flex-col">
+              <h3 className="text-xl font-semibold mb-2">{title}</h3>
+              <p className="text-white/70 line-clamp-3">{description}</p>
+            </div>
             
-            {/* Click for more info indicator */}
-            <div className="flex items-center mt-4 text-melody-fuchsia text-sm">
+            {/* Click for more info indicator - always at bottom with mt-auto */}
+            <div className="flex items-center mt-auto pt-4 text-melody-fuchsia text-sm">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
                 <circle cx="12" cy="12" r="10"></circle>
                 <path d="M12 16v-4"></path>
@@ -122,8 +124,8 @@ export default function Services() {
           <line x1="8" y1="23" x2="16" y2="23"></line>
         </svg>
       ),
-      title: t.production,
-      description: t.productionDesc,
+      title: "Production",
+      description: "Transform your musical ideas into professionally produced tracks.",
       longDescription: "Our professional music production service transforms your ideas into polished tracks. We offer:\n\n• Full song production from concept to completion\n• Access to our state-of-the-art recording studios\n• Collaboration with experienced producers\n• Beat making and instrumental production\n• Advanced audio processing and sound design\n\nEach project includes multiple revision rounds to ensure your vision comes to life exactly as you imagine.",
       price: "$500 - $2,500"
     },
@@ -134,8 +136,8 @@ export default function Services() {
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
       ),
-      title: t.voiceRecording,
-      description: t.voiceRecordingDesc,
+      title: "Voice Recording",
+      description: "Perfect your vocal performance with professional vocal recordings.",
       longDescription: "Perfect your vocal performance with our professional voice recording services:\n\n• High-definition vocal recordings in acoustic-treated environment\n• Professional microphones and preamps for crystal clear sound\n• Experienced engineers specializing in vocal recording\n• Pitch correction and timing adjustments as needed\n• Multiple takes to capture your best performance\n\nOur voice recording sessions include up to 4 hours of studio time with a dedicated sound engineer.",
       price: "$150 - $350"
     },
@@ -153,8 +155,8 @@ export default function Services() {
           <line x1="17" y1="16" x2="23" y2="16"></line>
         </svg>
       ),
-      title: t.masterMixing,
-      description: t.masterMixingDesc,
+      title: "Master and Mixing",
+      description: "Get a polished, balanced, and radio-ready sound for your music.",
       longDescription: "Elevate your tracks with our professional mixing and mastering services:\n\n• Detailed balance adjustment of all track elements\n• Advanced EQ, compression, and spatial processing\n• Stereo enhancement and depth creation\n• Industry-standard loudness optimization\n• Format-specific masters (streaming, CD, vinyl)\n\nAll masters include revisions to ensure you're completely satisfied with the final product before release.",
       price: "$250 - $600"
     },
@@ -166,8 +168,8 @@ export default function Services() {
           <path d="M17 18.5a13 13 0 0 0-10 0"></path>
         </svg>
       ),
-      title: t.vocalCoach,
-      description: t.vocalCoachDesc,
+      title: "Vocal Coach",
+      description: "Unlock your voice potential with our vocal coaching sessions.",
       longDescription: "Develop your vocal skills and discover your unique voice with our vocal coaching services:\n\n• Personalized vocal technique assessment and development\n• Breathing and support exercises\n• Range expansion and strengthening\n• Style development and genre-specific techniques\n• Performance preparation and stage presence\n\nSessions are available as one-time coaching or as part of an ongoing development program tailored to your specific goals.",
       price: "$75 - $150/hour"
     },
@@ -181,8 +183,8 @@ export default function Services() {
           <path d="M10 9H8"></path>
         </svg>
       ),
-      title: t.songWriting,
-      description: t.songWritingDesc,
+      title: "Son Writting",
+      description: "Craft powerful lyrics and melodies tailored to your vision.",
       longDescription: "Transform your ideas into complete, professional songs with our songwriting services:\n\n• Collaborative writing sessions with experienced songwriters\n• Development of lyrics, melody, chord progressions, and structure\n• Genre-specific composition techniques\n• Hook and chorus development\n• Complete song creation from concept to demo\n\nOur songwriting packages include multiple revision rounds and a demo production of the finished song.",
       price: "$400 - $1,500"
     },
@@ -193,8 +195,8 @@ export default function Services() {
           <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
         </svg>
       ),
-      title: t.studioSessions,
-      description: t.studioSessionsDesc,
+      title: "Studio Sessions",
+      description: "Book a creative studio space for your recordings and ideas.",
       longDescription: "Book our professional recording facilities for your creative projects:\n\n• Access to our fully-equipped recording studios\n• Professional recording engineer included\n• High-end instruments and equipment available\n• Comfortable creative environment\n• Raw files provided after session completion\n\nStudio sessions can be booked hourly, half-day, or full-day depending on your project needs.",
       price: "$75 - $600"
     }

@@ -55,6 +55,15 @@ export default function Hero() {
           muted
           loop
           playsInline
+          preload="auto"
+          poster="/assets/hero-bg.png"
+          onError={(e) => {
+            console.error("Video error:", e);
+            // Apply fallback background if video fails
+            const target = e.currentTarget;
+            target.style.display = 'none';
+            target.parentElement?.classList.add('video-fallback');
+          }}
         >
           <source src="/assets/videos/VID_20250720_100423_736.mp4" type="video/mp4" />
           Your browser does not support the video tag.
