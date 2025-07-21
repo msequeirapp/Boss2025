@@ -33,27 +33,25 @@ function ServiceCard({ icon, title, description, longDescription, price, delay, 
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay }}
-        className="relative group cursor-pointer h-full"
+        className="relative group cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-        <Card className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-melody-fuchsia/30 transition-all duration-300 overflow-hidden h-full flex flex-col">
-          <CardContent className="p-6 flex flex-col h-full">
+        <Card className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-melody-fuchsia/30 transition-all duration-300 overflow-hidden">
+          <CardContent className="p-6">
             {/* Background glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-melody-purple/0 via-melody-fuchsia/0 to-melody-purple/0 group-hover:from-melody-purple/10 group-hover:via-melody-fuchsia/10 group-hover:to-melody-purple/10 transition-all duration-500"></div>
             
             {/* Icon */}
-            <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center mb-4 group-hover:bg-melody-fuchsia/20 transition-colors text-melody-fuchsia shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center mb-4 group-hover:bg-melody-fuchsia/20 transition-colors text-melody-fuchsia">
               {icon}
             </div>
             
-            {/* Content - using flex-grow to take available space */}
-            <div className="flex-grow flex flex-col">
-              <h3 className="text-xl font-semibold mb-2">{title}</h3>
-              <p className="text-white/70 line-clamp-3">{description}</p>
-            </div>
+            {/* Content */}
+            <h3 className="text-xl font-semibold mb-2">{title}</h3>
+            <p className="text-white/70">{description}</p>
             
-            {/* Click for more info indicator - always at bottom with mt-auto */}
-            <div className="flex items-center mt-auto pt-4 text-melody-fuchsia text-sm">
+            {/* Click for more info indicator */}
+            <div className="flex items-center mt-4 text-melody-fuchsia text-sm">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
                 <circle cx="12" cy="12" r="10"></circle>
                 <path d="M12 16v-4"></path>

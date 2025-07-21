@@ -154,7 +154,7 @@ export default function Releases() {
                   <div key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-colors">
                     <div className="youtube-container">
                       <iframe 
-                        src={`https://www.youtube.com/embed/${video.id}`} 
+                        src={`https://www.youtube.com/embed/${video.id}?si=bS0N7HNSw2W--R0f`} 
                         title="YouTube video player"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerPolicy="strict-origin-when-cross-origin" 

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/hooks/use-language";
+import { useVideoLoader } from "@/hooks/use-video-loader";
 
 export default function Hero() {
   const { translations } = useLang();
@@ -29,9 +30,7 @@ export default function Hero() {
   
   // Stats data
   const stats = [
-    { value: "100+", label: t.artistsSigned },
     { value: "5M+", label: t.monthlyStreams },
-    { value: "15+", label: t.industryAwards },
     { value: "10+", label: t.yearsExperience },
   ];
   
@@ -43,6 +42,11 @@ export default function Hero() {
     "YouTube Music",
     "Deezer"
   ];
+  
+  // Use our custom video loader hook
+  const { videoRef } = useVideoLoader({ 
+    videoSrc: "/assets/videos/VID_20250720_100423_736.mp4" 
+  });
 
   return (
     <section id="home" className="relative min-h-screen pt-20 flex items-center overflow-hidden bg-melody-black">
@@ -50,21 +54,14 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         {/* Background video */}
         <video 
-          id="hero-video"
+          ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          poster="/assets/hero-bg.png"
-          onError={(e) => {
-            console.error("Video error:", e);
-            // Apply fallback background if video fails
-            const target = e.currentTarget;
-            target.style.display = 'none';
-            target.parentElement?.classList.add('video-fallback');
-          }}
+
         >
           <source src="/assets/videos/VID_20250720_100423_736.mp4" type="video/mp4" />
           Your browser does not support the video tag.

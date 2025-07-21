@@ -89,12 +89,12 @@ export default function About() {
                 <p className="text-white/80">{t.missionText}</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                   <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold mb-2">{t.artistFirst}</h4>
-                    <p className="text-white/70">{t.artistFirstDesc}</p>
+                    <h4 className="text-lg font-semibold mb-2">Artista Primero</h4>
+                    <p className="text-white/70">Priorizamos la visión artística y el desarrollo a largo plazo sobre las tendencias pasajeras, asegurando que cada artista pueda expresar su autenticidad.</p>
                   </div>
                   <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold mb-2">{t.industryInnovation}</h4>
-                    <p className="text-white/70">{t.industryInnovationDesc}</p>
+                    <h4 className="text-lg font-semibold mb-2">Innovación en la Industria</h4>
+                    <p className="text-white/70">Constantemente exploramos nuevas tecnologías, estrategias y enfoques para mantener a nuestros artistas a la vanguardia de la industria musical.</p>
                   </div>
                 </div>
               </TabsContent>
@@ -117,21 +117,7 @@ export default function About() {
               <cite className="text-white/60 not-italic">{t.founder}</cite>
             </motion.div>
             
-            {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="mt-8"
-            >
-              <Button className="bg-white/10 hover:bg-white/15 transition-colors flex items-center">
-                {t.learnMore}
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2">
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
-              </Button>
-            </motion.div>
+            {/* CTA Button removed as requested */}
           </div>
           
           {/* Right side - Image and highlights */}
