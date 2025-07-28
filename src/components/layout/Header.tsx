@@ -27,6 +27,7 @@ export default function Header() {
     { name: t.about, href: "#about" },
     { name: t.releases, href: "#releases" },
     { name: t.services, href: "#services" },
+    { name: "Canales", href: "#channels" },
     { name: t.photos, href: "#photos" },
     { name: t.contact, href: "#contact" },
   ];

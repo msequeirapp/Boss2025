@@ -1,0 +1,13 @@
+/* Add any custom CSS for the Channels component here */
+.youtube-channel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.spotify-btn {
+  background: linear-gradient(to right, #1DB954, #1ED760);
+}
+
+.youtube-btn {
+  background: linear-gradient(to right, #FF0000, #FF3333);
+}

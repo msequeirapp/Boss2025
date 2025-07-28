@@ -19,13 +19,13 @@ interface ServiceCardProps {
   title: string;
   description: string;
   longDescription: string;
-  price: string;
   delay: number;
   isInView: boolean;
 }
 
-function ServiceCard({ icon, title, description, longDescription, price, delay, isInView }: ServiceCardProps) {
+function ServiceCard({ icon, title, description, longDescription, delay, isInView }: ServiceCardProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { lang } = useLang();
   
   return (
     <>
@@ -57,14 +57,14 @@ function ServiceCard({ icon, title, description, longDescription, price, delay, 
                 <path d="M12 16v-4"></path>
                 <path d="M12 8h.01"></path>
               </svg>
-              Click for details
+              {lang === 'en' ? "Click for details" : "Haga clic para detalles"}
             </div>
           </CardContent>
         </Card>
       </motion.div>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-melody-dark border border-melody-purple/20 text-white max-w-lg">
+        <DialogContent className="bg-melody-dark border border-melody-purple/20 text-white max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center mb-2">
               <div className="w-10 h-10 rounded-lg bg-melody-fuchsia/20 flex items-center justify-center mr-3 text-melody-fuchsia">
@@ -78,26 +78,19 @@ function ServiceCard({ icon, title, description, longDescription, price, delay, 
           </DialogHeader>
           
           <div className="my-4">
-            <h4 className="text-lg font-semibold mb-2 text-melody-fuchsia">Service Details</h4>
+            <h4 className="text-lg font-semibold mb-2 text-melody-fuchsia">{lang === 'en' ? "Service Details" : "Detalles del Servicio"}</h4>
             <p className="text-white/80 whitespace-pre-line">{longDescription}</p>
-            
-            <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
-              <div className="flex justify-between items-center">
-                <span className="text-white/70">Starting from:</span>
-                <span className="text-xl font-bold text-melody-fuchsia">{price}</span>
-              </div>
-            </div>
           </div>
           
-          <DialogFooter className="flex justify-between items-center">
+          <DialogFooter className="flex flex-col sm:flex-row justify-between gap-4 mt-6">
             <DialogClose asChild>
-              <Button variant="outline" className="border-white/20">Close</Button>
+              <Button variant="outline" className="border-white/20 w-full sm:w-auto">{lang === 'en' ? "Close" : "Cerrar"}</Button>
             </DialogClose>
             <Button 
-              onClick={() => window.open('https://wa.me/50663040420?text=I am interested in your ' + title + ' service', '_blank')}
-              className="bg-gradient-to-r from-melody-purple to-melody-fuchsia hover:opacity-90"
+              onClick={() => window.open(`https://wa.me/50663040420?text=${lang === 'en' ? 'I am interested in your ' + title + ' service' : 'Estoy interesado en su servicio de ' + title}`, '_blank')}
+              className="bg-gradient-to-r from-melody-purple to-melody-fuchsia hover:opacity-90 w-full sm:w-auto"
             >
-              Contact via WhatsApp
+              {lang === 'en' ? "Contact via WhatsApp" : "Contactar por WhatsApp"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -112,6 +105,8 @@ export default function Services() {
   const { translations } = useLang();
   const t = translations.services;
   
+  const { lang } = useLang();
+  
   const servicesList = [
     {
       icon: (
@@ -122,10 +117,13 @@ export default function Services() {
           <line x1="8" y1="23" x2="16" y2="23"></line>
         </svg>
       ),
-      title: "Production",
-      description: "Transform your musical ideas into professionally produced tracks.",
-      longDescription: "Our professional music production service transforms your ideas into polished tracks. We offer:\n\n• Full song production from concept to completion\n• Access to our state-of-the-art recording studios\n• Collaboration with experienced producers\n• Beat making and instrumental production\n• Advanced audio processing and sound design\n\nEach project includes multiple revision rounds to ensure your vision comes to life exactly as you imagine.",
-      price: "$500 - $2,500"
+      title: lang === 'en' ? "Production" : "Producción",
+      description: lang === 'en' 
+        ? "Transform your musical ideas into professionally produced tracks." 
+        : "Transforma tus ideas musicales en pistas producidas profesionalmente.",
+      longDescription: lang === 'en'
+        ? "Our full music production service includes everything you need from concept to completion:\n\n• Complete song production process\n• Voice recording with vocal coach guidance\n• Professional mixing and mastering\n• Access to our state-of-the-art recording studios\n• Collaboration with experienced producers\n• Advanced audio processing and sound design\n\nEach project includes multiple revision rounds to ensure your vision comes to life exactly as you imagine."
+        : "Nuestro servicio de producción musical completo incluye todo lo que necesitas desde el concepto hasta la finalización:\n\n• Proceso completo de producción de canciones\n• Grabación de voz con guía de coach vocal\n• Mezcla y masterización profesional\n• Acceso a nuestros estudios de grabación de última generación\n• Colaboración con productores experimentados\n• Procesamiento de audio avanzado y diseño de sonido\n\nCada proyecto incluye múltiples rondas de revisión para asegurar que tu visión cobre vida exactamente como la imaginas."
     },
     {
       icon: (
@@ -134,10 +132,13 @@ export default function Services() {
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
       ),
-      title: "Voice Recording",
-      description: "Perfect your vocal performance with professional vocal recordings.",
-      longDescription: "Perfect your vocal performance with our professional voice recording services:\n\n• High-definition vocal recordings in acoustic-treated environment\n• Professional microphones and preamps for crystal clear sound\n• Experienced engineers specializing in vocal recording\n• Pitch correction and timing adjustments as needed\n• Multiple takes to capture your best performance\n\nOur voice recording sessions include up to 4 hours of studio time with a dedicated sound engineer.",
-      price: "$150 - $350"
+      title: lang === 'en' ? "Voice Recording" : "Grabación de Voz",
+      description: lang === 'en'
+        ? "Perfect your vocal performance with professional vocal recordings."
+        : "Perfecciona tu interpretación vocal con grabaciones profesionales.",
+      longDescription: lang === 'en'
+        ? "Our professional voice recording service includes vocal coach guidance:\n\n• High-definition vocal recordings in acoustic-treated environment\n• Professional microphones and preamps for crystal clear sound\n• Expert vocal coaching during the recording session\n• Pitch correction and timing adjustments as needed\n• Multiple takes to capture your best performance\n\nOur voice recording sessions include dedicated sound engineer and vocal coach support."
+        : "Nuestro servicio profesional de grabación de voz incluye orientación de coach vocal:\n\n• Grabaciones vocales de alta definición en un entorno con tratamiento acústico\n• Micrófonos y preamplificadores profesionales para un sonido cristalino\n• Coaching vocal experto durante la sesión de grabación\n• Corrección de tono y ajustes de tiempo según sea necesario\n• Múltiples tomas para capturar tu mejor interpretación\n\nNuestras sesiones de grabación de voz incluyen el apoyo de un ingeniero de sonido y un coach vocal dedicados."
     },
     {
       icon: (
@@ -153,10 +154,13 @@ export default function Services() {
           <line x1="17" y1="16" x2="23" y2="16"></line>
         </svg>
       ),
-      title: "Master and Mixing",
-      description: "Get a polished, balanced, and radio-ready sound for your music.",
-      longDescription: "Elevate your tracks with our professional mixing and mastering services:\n\n• Detailed balance adjustment of all track elements\n• Advanced EQ, compression, and spatial processing\n• Stereo enhancement and depth creation\n• Industry-standard loudness optimization\n• Format-specific masters (streaming, CD, vinyl)\n\nAll masters include revisions to ensure you're completely satisfied with the final product before release.",
-      price: "$250 - $600"
+      title: lang === 'en' ? "Master and Mixing" : "Master y Mezcla",
+      description: lang === 'en'
+        ? "Get a polished, balanced, and radio-ready sound for your music."
+        : "Consigue un sonido pulido, equilibrado y listo para la radio.",
+      longDescription: lang === 'en'
+        ? "Our professional mixing and mastering services will elevate your tracks:\n\n• Detailed balance adjustment of all track elements\n• Advanced EQ, compression, and spatial processing\n• Stereo enhancement and depth creation\n• Industry-standard loudness optimization\n• Format-specific masters (streaming, CD, vinyl)\n\nAll masters include revisions to ensure you're completely satisfied with the final product before release."
+        : "Nuestros servicios profesionales de mezcla y masterización elevarán tus pistas:\n\n• Ajuste detallado del balance de todos los elementos de la pista\n• EQ avanzada, compresión y procesamiento espacial\n• Mejora estéreo y creación de profundidad\n• Optimización de volumen según estándares de la industria\n• Masters específicos para cada formato (streaming, CD, vinilo)\n\nTodos los masters incluyen revisiones para asegurar que estés completamente satisfecho con el producto final antes del lanzamiento."
     },
     {
       icon: (
@@ -166,10 +170,13 @@ export default function Services() {
           <path d="M17 18.5a13 13 0 0 0-10 0"></path>
         </svg>
       ),
-      title: "Vocal Coach",
-      description: "Unlock your voice potential with our vocal coaching sessions.",
-      longDescription: "Develop your vocal skills and discover your unique voice with our vocal coaching services:\n\n• Personalized vocal technique assessment and development\n• Breathing and support exercises\n• Range expansion and strengthening\n• Style development and genre-specific techniques\n• Performance preparation and stage presence\n\nSessions are available as one-time coaching or as part of an ongoing development program tailored to your specific goals.",
-      price: "$75 - $150/hour"
+      title: lang === 'en' ? "Vocal Coach" : "Coach Vocal",
+      description: lang === 'en'
+        ? "Unlock your voice potential with our vocal coaching sessions."
+        : "Desbloquea el potencial de tu voz con nuestras sesiones de coaching vocal.",
+      longDescription: lang === 'en'
+        ? "Develop your vocal skills and discover your unique voice with our vocal coaching services:\n\n• Personalized vocal technique assessment and development\n• Breathing and support exercises\n• Range expansion and strengthening\n• Style development and genre-specific techniques\n• Performance preparation and stage presence\n\nSessions are available as one-time coaching or as part of our production and recording services."
+        : "Desarrolla tus habilidades vocales y descubre tu voz única con nuestros servicios de coaching vocal:\n\n• Evaluación y desarrollo personalizado de técnica vocal\n• Ejercicios de respiración y apoyo\n• Expansión y fortalecimiento del rango vocal\n• Desarrollo de estilo y técnicas específicas de género\n• Preparación para actuaciones y presencia escénica\n\nLas sesiones están disponibles como coaching individual o como parte de nuestros servicios de producción y grabación."
     },
     {
       icon: (
@@ -181,22 +188,13 @@ export default function Services() {
           <path d="M10 9H8"></path>
         </svg>
       ),
-      title: "Son Writting",
-      description: "Craft powerful lyrics and melodies tailored to your vision.",
-      longDescription: "Transform your ideas into complete, professional songs with our songwriting services:\n\n• Collaborative writing sessions with experienced songwriters\n• Development of lyrics, melody, chord progressions, and structure\n• Genre-specific composition techniques\n• Hook and chorus development\n• Complete song creation from concept to demo\n\nOur songwriting packages include multiple revision rounds and a demo production of the finished song.",
-      price: "$400 - $1,500"
-    },
-    {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-        </svg>
-      ),
-      title: "Studio Sessions",
-      description: "Book a creative studio space for your recordings and ideas.",
-      longDescription: "Book our professional recording facilities for your creative projects:\n\n• Access to our fully-equipped recording studios\n• Professional recording engineer included\n• High-end instruments and equipment available\n• Comfortable creative environment\n• Raw files provided after session completion\n\nStudio sessions can be booked hourly, half-day, or full-day depending on your project needs.",
-      price: "$75 - $600"
+      title: lang === 'en' ? "Songwriting" : "Composición",
+      description: lang === 'en'
+        ? "Ready-made songs with lyrics and melodies for your interpretation."
+        : "Canciones ya escritas, listas y preparadas para que el artista las interprete.",
+      longDescription: lang === 'en'
+        ? "Our songwriting service provides complete, ready-made songs for your interpretation:\n\n• Professionally written songs with lyrics and melodies\n• Prepared for immediate recording and production\n• Range of styles and genres available\n• Complete song structure ready for your performance\n• Custom adjustments to fit your vocal range\n\nAll songs are professionally crafted and ready for you to make them your own."
+        : "Nuestro servicio de composición proporciona canciones completas y listas para tu interpretación:\n\n• Canciones profesionalmente escritas con letras y melodías\n• Preparadas para grabación y producción inmediata\n• Variedad de estilos y géneros disponibles\n• Estructura completa de la canción lista para tu interpretación\n• Ajustes personalizados para adaptarse a tu rango vocal\n\nTodas las canciones están profesionalmente elaboradas y listas para que las hagas tuyas."
     }
   ];
 
@@ -243,7 +241,6 @@ export default function Services() {
               title={service.title}
               description={service.description}
               longDescription={service.longDescription}
-              price={service.price}
               delay={0.2 + index * 0.1}
               isInView={isInView}
             />

@@ -4,6 +4,7 @@ import Releases from "@/components/sections/Releases";
 import Services from "@/components/sections/Services";
 import Photos from "@/components/sections/Photos";
 import Contact from "@/components/sections/Contact";
+import Channels from "@/components/sections/Channels";
 import { useLang } from "@/hooks/use-language";
 
 export default function Index() {
@@ -15,6 +16,7 @@ export default function Index() {
       <About />
       <Releases />
       <Services />
+      <Channels />
       <Photos />
       <Contact />
     </main>
