@@ -1,0 +1,4 @@
+build: pnpm build
+build_path: /workspace/Boss/Boss/dist
+dev: pnpm dev
+install: pnpm install
