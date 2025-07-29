@@ -53,50 +53,18 @@ export default function About() {
                   transition={{ duration: 0.6, delay: 0.3 }}
                   className="text-white/80"
                 >
-                  {t.paragraph1}
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="text-white/80"
-                >
-                  {t.paragraph2}
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                  className="text-white/80"
-                >
-                  {t.paragraph3}
+                  Boss of Melody nace como un estudio y sello discográfico independiente dedicado a potenciar nuevos talentos y producir música auténtica con un sonido distintivo.
                 </motion.p>
               </TabsContent>
               
               <TabsContent value="vision" className="space-y-6">
                 <h3 className="text-2xl font-bold">{t.vision}</h3>
-                <p className="text-white/80">{t.visionText}</p>
-                <ul className="list-disc list-inside text-white/80 space-y-2">
-                  <li>{t.visionItem1}</li>
-                  <li>{t.visionItem2}</li>
-                  <li>{t.visionItem3}</li>
-                  <li>{t.visionItem4}</li>
-                </ul>
+                <p className="text-white/80">Ser reconocidos como un referente en la producción musical independiente, formando artistas que marquen la diferencia en la escena musical global.</p>
               </TabsContent>
               
               <TabsContent value="mission" className="space-y-6">
                 <h3 className="text-2xl font-bold">{t.mission}</h3>
-                <p className="text-white/80">{t.missionText}</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold mb-2">Artista Primero</h4>
-                    <p className="text-white/70">Priorizamos la visión artística y el desarrollo a largo plazo sobre las tendencias pasajeras, asegurando que cada artista pueda expresar su autenticidad.</p>
-                  </div>
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold mb-2">Innovación en la Industria</h4>
-                    <p className="text-white/70">Constantemente exploramos nuevas tecnologías, estrategias y enfoques para mantener a nuestros artistas a la vanguardia de la industria musical.</p>
-                  </div>
-                </div>
+                <p className="text-white/80">Producir música de alta calidad que resuene con las audiencias mientras desarrollamos artistas auténticos que puedan expresar su verdadera voz creativa.</p>
               </TabsContent>
             </Tabs>
             
