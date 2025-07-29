@@ -14,22 +14,22 @@ const videos = [
   },
   { 
     id: "gb-FyFOzcQw", 
-    title: "Teaser Video", 
+    title: "BORRACHITA", 
     artist: "Boss of Melody" 
   },
   { 
     id: "JmMFXidL_6k", 
-    title: "Studio Performance", 
+    title: "Mi Angel", 
     artist: "Boss of Melody" 
   },
   { 
     id: "3XOAZSER5YY", 
-    title: "Live Recording", 
+    title: "SUELTA EL DANCEHALL", 
     artist: "Boss of Melody" 
   },
   { 
     id: "i6GNxQzpQFc", 
-    title: "Music Production", 
+    title: "Click Clack", 
     artist: "Boss of Melody" 
   },
   { 
@@ -39,7 +39,7 @@ const videos = [
   },
   { 
     id: "Tom-_Kfs1gk", 
-    title: "Live Performance", 
+    title: "Rumbear Tomar Y Bailar", 
     artist: "Boss of Melody" 
   }
 ];
