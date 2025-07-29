@@ -22,7 +22,7 @@ export default function Channels() {
     {
       name: "Moises",
       description: "Canal personal de Moises, fundador y productor principal de Boss of Melody. Contenido sobre producción musical, tutoriales y vida detrás de escenas.",
-      youtubeUrl: "https://www.youtube.com/@moisescr8851",
+      youtubeUrl: "https://www.youtube.com/@moisesagueromusic",
       spotifyUrl: "https://open.spotify.com/artist/49SKRyZRB3bpTQNYrTROdj?si=YgCa8zAcTS6FtAErVotJxg",
       image: "/assets/hero-bg.png"
     }

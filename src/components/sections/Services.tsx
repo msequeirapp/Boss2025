@@ -256,8 +256,8 @@ export default function Services() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-6 md:mb-0">
-              <h3 className="text-2xl font-semibold mb-2">Ready to elevate your music career?</h3>
-              <p className="text-white/70">Contact our team today to discuss how we can help you achieve your goals.</p>
+              <h3 className="text-2xl font-semibold mb-2">{lang === 'en' ? "Ready to elevate your music career?" : "¿Listo para elevar tu carrera musical?"}</h3>
+              <p className="text-white/70">{lang === 'en' ? "Contact our team today to discuss how we can help you achieve your goals." : "Contacta a nuestro equipo hoy para discutir cómo podemos ayudarte a lograr tus metas."}</p>
             </div>
             
             <Button 

@@ -34,7 +34,7 @@ const videos = [
   },
   { 
     id: "sDLH2cgmLbw", 
-    title: "Studio Session", 
+    title: "SANTADIABLA", 
     artist: "Boss of Melody" 
   },
   { 
@@ -80,9 +80,6 @@ export default function Releases() {
           <div className="flex justify-center mb-8">
             <TabsList className="bg-white/5 border border-white/10">
               <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="music-videos">Music Videos</TabsTrigger>
-              <TabsTrigger value="singles">Singles</TabsTrigger>
-              <TabsTrigger value="albums">Albums</TabsTrigger>
             </TabsList>
           </div>
           
@@ -109,12 +106,7 @@ export default function Releases() {
                 <div className="lg:col-span-2">
                   <div className="p-4">
                     <span className="inline-block py-1 px-3 rounded-full bg-white/10 text-xs font-medium mb-3">FEATURED RELEASE</span>
-                    <h3 className="text-2xl md:text-3xl font-bold mb-2">Summer Hits Collection</h3>
-                    <p className="text-white/70 mb-4">
-                      Our latest compilation featuring the hottest tracks from our roster of talented artists.
-                      This collection showcases the diverse sounds and unique styles that make Boss of Melody stand out.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 mt-2">
                       <Button 
                         className="bg-white hover:bg-white/90 text-black"
                         onClick={() => window.open(`https://www.youtube.com/watch?v=${videos[0].id}`, '_blank')}
@@ -173,46 +165,7 @@ export default function Releases() {
             {/* Removed View All Button as requested */}
           </TabsContent>
           
-          <TabsContent value="music-videos" className="text-center py-20">
-            <div className="flex flex-col items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-white/30 mb-4">
-                <path d="M14.5 4h-5L7 7H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-3l-2.5-3Z"></path>
-                <circle cx="12" cy="11" r="3"></circle>
-              </svg>
-              <h3 className="text-xl font-semibold mb-2">Music Videos Collection</h3>
-              <p className="text-white/70 max-w-md mx-auto">
-                Explore our collection of music videos. Select the Music Videos tab to view all available videos.
-              </p>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="singles" className="text-center py-20">
-            <div className="flex flex-col items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-white/30 mb-4">
-                <circle cx="5.5" cy="17.5" r="2.5"></circle>
-                <circle cx="18.5" cy="17.5" r="2.5"></circle>
-                <path d="M5.5 17.5V2.5l13 2v13"></path>
-              </svg>
-              <h3 className="text-xl font-semibold mb-2">Singles Collection</h3>
-              <p className="text-white/70 max-w-md mx-auto">
-                Browse our latest single releases from our artists. Select the Singles tab to view all available singles.
-              </p>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="albums" className="text-center py-20">
-            <div className="flex flex-col items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-white/30 mb-4">
-                <path d="m16 2-3 3h-5l-3-3z"></path>
-                <path d="M5 5v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5Z"></path>
-                <path d="M16 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"></path>
-              </svg>
-              <h3 className="text-xl font-semibold mb-2">Albums Collection</h3>
-              <p className="text-white/70 max-w-md mx-auto">
-                Discover our full albums and EPs. Select the Albums tab to browse our full catalog.
-              </p>
-            </div>
-          </TabsContent>
+          {/* Only keeping the "all" tab content which is already defined above */}
         </Tabs>
       </div>
     </section>
