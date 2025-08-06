@@ -27,14 +27,6 @@ export default function Channels() {
       icon: "spotify",
       color: "bg-green-600 hover:bg-green-700",
       image: "/assets/logo.jpeg"
-    },
-    {
-      name: "Apple Music",
-      description: "Descubre nuestra música en Apple Music. Nuevos lanzamientos, playlists exclusivas y más.",
-      url: "https://music.apple.com/us/artist/boss-of-melody/1727184767",
-      icon: "apple",
-      color: "bg-black hover:bg-black/90",
-      image: "/assets/logo.jpeg"
     }
   ];
 
@@ -63,7 +55,7 @@ export default function Channels() {
             <span className="inline-block text-melody-fuchsia font-medium mb-2">Nuestros Canales</span>
             <h2 className="text-3xl md:text-5xl font-bold mb-6">Síguenos en YouTube y Spotify</h2>
             <p className="text-lg text-white/70">
-              Descubre nuestra música y contenido exclusivo a través de nuestros canales oficiales en YouTube y Spotify.
+              Descubre nuestra música y videos exclusivos a través de nuestros canales oficiales en YouTube y Spotify.
             </p>
           </motion.div>
         </div>
