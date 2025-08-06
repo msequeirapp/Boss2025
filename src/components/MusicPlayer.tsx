@@ -194,21 +194,35 @@ export default function MusicPlayer() {
 
       {/* Only render the player UI when it's visible */}
       {showPlayer && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 border-t border-white/10 p-4 shadow-xl">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 border-t border-white/10 p-4 shadow-xl max-h-[90vh] overflow-y-auto">
+          {/* Close button */}
+          <button 
+            onClick={togglePlayer}
+            className="absolute top-2 right-2 p-2 rounded-full bg-white/10 hover:bg-white/20 z-10"
+            aria-label="Close player"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+          
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
               {/* Left: Video player */}
-              <div className="col-span-1 md:col-span-2">
-                <YouTubePlayer 
-                  videoId={currentTrack.youtubeId} 
-                  onEnd={nextTrack}
-                  isPlaying={isPlaying}
-                  onPlayerReady={handlePlayerReady}
-                />
+              <div className="col-span-1 lg:col-span-2 h-full">
+                <div className="aspect-video w-full">
+                  <YouTubePlayer 
+                    videoId={currentTrack.youtubeId} 
+                    onEnd={nextTrack}
+                    isPlaying={isPlaying}
+                    onPlayerReady={handlePlayerReady}
+                  />
+                </div>
               </div>
 
               {/* Right: Controls and info */}
-              <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-4 mt-2 lg:mt-0">
                 <div>
                   <h3 className="font-bold text-lg text-white">{currentTrack.title}</h3>
                   <p className="text-white/70 text-sm">{currentTrack.artist}</p>
