@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLang } from "@/hooks/use-language";
 
@@ -14,10 +13,7 @@ export default function About() {
     <section id="about" className="py-20 lg:py-32 bg-melody-dark relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 z-0">
-        {/* Gradient backdrop */}
         <div className="absolute inset-0 bg-gradient-to-br from-melody-dark via-melody-black to-melody-dark"></div>
-        
-        {/* Circles */}
         <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-melody-purple opacity-5 blur-3xl"></div>
         <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-melody-fuchsia opacity-5 blur-3xl"></div>
       </div>
@@ -75,20 +71,18 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.9 }}
               className="mt-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 md:p-8"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" className="mb-4 text-melody-fuchsia">
-                <path d="M10 11H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                <path d="M14 8V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                <path d="M17 13v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                <path d="M10 17v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" className="mb-4 text-melody-fuchsia" viewBox="0 0 24 24">
+                <path d="M10 11H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14 8V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M17 13v3a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M10 17v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <blockquote className="text-xl italic mb-4">{t.quote}</blockquote>
               <cite className="text-white/60 not-italic">{t.founder}</cite>
             </motion.div>
-            
-            {/* CTA Button removed as requested */}
           </div>
           
-          {/* Right side - Image and highlights */}
+          {/* Right side - Only Image */}
           <div className="lg:col-span-5">
             <motion.div
               initial={{ opacity: 0, x: 30 }}
@@ -96,53 +90,10 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="relative"
             >
-              {/* Main image */}
               <div className="rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-black/30">
-                <img 
-                  src="/assets/hero-bg.png" 
-                  alt="Founder" 
-                  className="w-full h-full object-cover" 
-                />
+                <img src="/assets/hero-bg.png" alt="Founder" className="w-full h-full object-cover" />
               </div>
-              
-              {/* Decorative element - right side only */}
               <div className="absolute -top-4 -right-4 w-32 h-32 rounded-lg border border-melody-purple/30 bg-melody-black/30 backdrop-blur-md z-0"></div>
-              
-              {/* Studio highlight box */}
-              <div className="mt-12 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-2">{t.studio}</h3>
-                <p className="text-white/70 mb-4">{t.studioDescription}</p>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-melody-fuchsia mr-2">
-                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    <span>Professional recording equipment</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-melody-fuchsia mr-2">
-                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    <span>Acoustically-treated recording booths</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-melody-fuchsia mr-2">
-                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    <span>Expert sound engineers</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-melody-fuchsia mr-2">
-                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                    <span>Relaxing creative environment</span>
-                  </li>
-                </ul>
-              </div>
             </motion.div>
           </div>
         </div>

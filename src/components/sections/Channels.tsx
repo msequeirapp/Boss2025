@@ -21,7 +21,7 @@ export default function Channels() {
     },
     {
       title: "Moises Marsh",
-      image: "/assets/moises.jpeg",
+      image: "/assets/hero-bg.png",
       description:
         "Sigue a Moises Marsh para escuchar su música y ver sus videos.",
       spotify: "https://open.spotify.com/artist/0wU7V7mwjwQlLiXJF5i7XW",
