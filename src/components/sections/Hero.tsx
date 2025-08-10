@@ -30,7 +30,6 @@ export default function Hero() {
   
   // Stats data
   const stats = [
-    { value: "5M+", label: t.monthlyStreams },
     { value: "10+", label: t.yearsExperience },
   ];
   
@@ -38,9 +37,7 @@ export default function Hero() {
   const partners = [
     "Spotify",
     "Apple Music",
-    "Amazon Music",
     "YouTube Music",
-    "Deezer"
   ];
   
   // Use our custom video loader hook

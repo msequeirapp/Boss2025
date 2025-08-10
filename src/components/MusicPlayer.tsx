@@ -41,11 +41,12 @@ const trackData: YoutubeTrack[] = [
   }
 ];
 
-// Memoized toggle button
+// Memoized floating toggle button
 const ToggleButton = memo(({ showPlayer, onClick }: { showPlayer: boolean, onClick: () => void }) => (
   <Button
     onClick={onClick}
     className="fixed bottom-6 right-6 z-50 rounded-full w-12 h-12 p-0 shadow-lg bg-melody-fuchsia hover:bg-melody-fuchsia/90"
+    aria-label={showPlayer ? "Close player" : "Open player"}
   >
     {showPlayer ? (
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -63,7 +64,7 @@ const ToggleButton = memo(({ showPlayer, onClick }: { showPlayer: boolean, onCli
 ));
 ToggleButton.displayName = "ToggleButton";
 
-// Load YouTube API
+// Load YouTube IFrame API
 const loadYouTubeAPI = () => {
   if (window.YT) return Promise.resolve();
   return new Promise<void>((resolve) => {
@@ -94,6 +95,7 @@ const YouTubePlayer = ({
 
     const setBestQuality = () => {
       try {
+        // Try highest; YT falls back if not available
         player?.setPlaybackQuality("highres");
         player?.setPlaybackQuality("hd1080");
       } catch {}
@@ -120,11 +122,12 @@ const YouTubePlayer = ({
           onReady: () => {
             if (!player) return;
             onPlayerReady(player);
-            player.seekTo(0, true);
+            player.seekTo(0, true);   // ensure start at 0
             setBestQuality();
             if (isPlaying) player.playVideo();
           },
           onStateChange: (event) => {
+            // Improve quality as soon as playback/buffering starts
             if (event.data === window.YT.PlayerState.BUFFERING ||
                 event.data === window.YT.PlayerState.PLAYING) {
               setBestQuality();
@@ -159,15 +162,15 @@ export default function MusicPlayer() {
 
   const currentTrack = trackData[currentTrackIndex];
 
+  // Controls
   const togglePlayPause = useCallback(() => {
-    if (player) {
-      if (isPlaying) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
-      }
-      setIsPlaying(!isPlaying);
+    if (!player) return;
+    if (isPlaying) {
+      player.pauseVideo();
+    } else {
+      player.playVideo();
     }
+    setIsPlaying(!isPlaying);
   }, [isPlaying, player]);
 
   const previousTrack = useCallback(() => {
@@ -191,9 +194,13 @@ export default function MusicPlayer() {
 
   return (
     <>
+      {/* Floating toggle */}
       <ToggleButton showPlayer={showPlayer} onClick={togglePlayer} />
+
+      {/* Player UI */}
       {showPlayer && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 border-t border-white/10 p-4 shadow-xl max-h-[90vh] overflow-y-auto">
+          {/* Close */}
           <button 
             onClick={togglePlayer}
             className="absolute top-2 right-2 p-2 rounded-full bg-white/10 hover:bg-white/20 z-10"
@@ -207,6 +214,7 @@ export default function MusicPlayer() {
           
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+              {/* Video */}
               <div className="col-span-1 lg:col-span-2 h-full">
                 <div className="aspect-video w-full">
                   <YouTubePlayer 
@@ -218,35 +226,52 @@ export default function MusicPlayer() {
                 </div>
               </div>
 
+              {/* Info + Controls */}
               <div className="flex flex-col space-y-4 mt-2 lg:mt-0">
                 <div>
                   <h3 className="font-bold text-lg text-white">{currentTrack.title}</h3>
                   <p className="text-white/70 text-sm">{currentTrack.artist}</p>
                 </div>
 
-                <div className="flex justify-center space-x-6">
-                  <button onClick={previousTrack} className="p-3 rounded-full hover:bg-white/10" aria-label="Previous track">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {/* Controls - FIXED styling */}
+                <div className="flex justify-center items-center space-x-6 mt-4">
+                  {/* Previous */}
+                  <button
+                    onClick={previousTrack}
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                    aria-label="Previous track"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="m12 19-7-7 7-7"></path>
                       <path d="m19 19-7-7 7-7"></path>
                     </svg>
                   </button>
-                  
-                  <button onClick={togglePlayPause} className="p-4 rounded-full bg-melody-fuchsia text-white hover:bg-melody-fuchsia/90" aria-label={isPlaying ? "Pause" : "Play"}>
+
+                  {/* Play / Pause */}
+                  <button
+                    onClick={togglePlayPause}
+                    className="flex items-center justify-center w-14 h-14 rounded-full bg-melody-fuchsia text-white hover:bg-melody-fuchsia/90 transition-colors"
+                    aria-label={isPlaying ? "Pause" : "Play"}
+                  >
                     {isPlaying ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="6" y="4" width="4" height="16"></rect>
                         <rect x="14" y="4" width="4" height="16"></rect>
                       </svg>
                     ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polygon points="5 3 19 12 5 21 5 3"></polygon>
                       </svg>
                     )}
                   </button>
-                  
-                  <button onClick={nextTrack} className="p-3 rounded-full hover:bg-white/10" aria-label="Next track">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+
+                  {/* Next */}
+                  <button
+                    onClick={nextTrack}
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                    aria-label="Next track"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="m5 19 7-7-7-7"></path>
                       <path d="m12 19 7-7-7-7"></path>
                     </svg>
