@@ -13,7 +13,7 @@ export default function Channels() {
   const artists = [
     {
       title: "Boss of Melody",
-      image: "/assets/logo.jpeg",
+      image: "/assets/logo.png",
       description:
         "Sigue a Boss of Melody y no te pierdas nuevos lanzamientos y videos.",
       spotify: "https://open.spotify.com/artist/1y1VVxiROPIgw3FVwcKG4K",

@@ -1,4 +1,4 @@
-import { useState, useCallback, memo, useEffect } from "react";
+import { useState, useCallback, memo, useEffect, useRef } from "react";
 
 interface YoutubeTrack {
   title: string;
@@ -20,19 +20,37 @@ const trackData: YoutubeTrack[] = [
 const ToggleButton = memo(({ showPlayer, onClick }: { showPlayer: boolean; onClick: () => void }) => (
   <button
     onClick={onClick}
-    className="fixed bottom-6 right-6 z-50 inline-flex items-center justify-center size-12 rounded-full leading-none shadow-lg bg-melody-fuchsia hover:bg-melody-fuchsia/90 transition-colors"
+    className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full leading-none shadow-lg bg-melody-fuchsia hover:bg-melody-fuchsia/90 transition-colors"
     aria-label={showPlayer ? "Close player" : "Open player"}
     type="button"
   >
     {showPlayer ? (
       // Ícono de cerrar
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
-        <path d="M18 6 6 18"></path>
-        <path d="m6 6 12 12"></path>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        className="w-6 h-6 block"
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
       </svg>
     ) : (
       // Ícono de audífonos 🎧
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        className="w-6 h-6 block"
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" />
         <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3" />
@@ -58,34 +76,35 @@ const loadYouTubeAPI = () => {
 const YouTubePlayer = ({
   videoId,
   onEnd,
-  isPlaying,
   onPlayerReady
 }: {
   videoId: string;
   onEnd: () => void;
-  isPlaying: boolean;
   onPlayerReady: (player: YT.Player) => void;
 }) => {
-  const playerContainerId = "youtube-player-container";
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const playerRef = useRef<YT.Player | null>(null);
 
   useEffect(() => {
-    let player: YT.Player | null = null;
+    let mounted = true;
 
     const setBestQuality = () => {
       try {
-        player?.setPlaybackQuality("highres");
-        player?.setPlaybackQuality("hd1080");
+        playerRef.current?.setPlaybackQuality("highres");
+        playerRef.current?.setPlaybackQuality("hd1080");
       } catch {}
     };
 
     const initPlayer = async () => {
       await loadYouTubeAPI();
-      player = new window.YT.Player(playerContainerId, {
+      if (!mounted || !containerRef.current) return;
+
+      playerRef.current = new window.YT.Player(containerRef.current, {
         height: "100%",
         width: "100%",
         videoId,
         playerVars: {
-          autoplay: isPlaying ? 1 : 0,
+          autoplay: 0,           // 🔒 no auto-play aquí; lo controlamos desde el padre
           controls: 0,
           modestbranding: 1,
           rel: 0,
@@ -97,11 +116,11 @@ const YouTubePlayer = ({
         },
         events: {
           onReady: () => {
-            if (!player) return;
-            onPlayerReady(player);
-            player.seekTo(0, true);
+            if (!mounted) return;
+            // No reproducimos aquí para evitar auto-resume al pausar.
+            onPlayerReady(playerRef.current as YT.Player);
+            playerRef.current?.seekTo(0, true);
             setBestQuality();
-            if (isPlaying) player.playVideo();
           },
           onStateChange: (event) => {
             if (
@@ -121,13 +140,15 @@ const YouTubePlayer = ({
     initPlayer();
 
     return () => {
-      player?.destroy();
+      mounted = false;
+      playerRef.current?.destroy();
+      playerRef.current = null;
     };
-  }, [videoId, isPlaying, onEnd, onPlayerReady]);
+  }, [videoId, onEnd, onPlayerReady]); // ❗ NO dependemos de isPlaying
 
   return (
     <div className="aspect-video w-full rounded-lg overflow-hidden">
-      <div id={playerContainerId} className="w-full h-full" />
+      <div ref={containerRef} className="w-full h-full" />
     </div>
   );
 };
@@ -145,20 +166,21 @@ export default function MusicPlayer() {
     if (!player) return;
     if (isPlaying) {
       player.pauseVideo();
+      setIsPlaying(false);
     } else {
       player.playVideo();
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying);
   }, [isPlaying, player]);
 
   const previousTrack = useCallback(() => {
     setCurrentTrackIndex((prev) => (prev === 0 ? trackData.length - 1 : prev - 1));
-    setIsPlaying(true);
+    setIsPlaying(true); // reproducir siguiente al cambiar
   }, []);
 
   const nextTrack = useCallback(() => {
     setCurrentTrackIndex((prev) => (prev === trackData.length - 1 ? 0 : prev + 1));
-    setIsPlaying(true);
+    setIsPlaying(true); // reproducir siguiente al cambiar
   }, []);
 
   const togglePlayer = useCallback(() => {
@@ -168,10 +190,14 @@ export default function MusicPlayer() {
   const handlePlayerReady = useCallback(
     (ytPlayer: YT.Player) => {
       setPlayer(ytPlayer);
+      // Si ya estaba en "play", reproducimos (p.ej. al cambiar de track)
       if (isPlaying) ytPlayer.playVideo();
     },
     [isPlaying]
   );
+
+  // Si cambias de track y debe reproducir, cuando el nuevo player esté listo, se ejecuta desde handlePlayerReady.
+  // Si pausas, ya no recreamos el player por cambio de isPlaying, así que NO se auto-reproduce.
 
   return (
     <>
@@ -184,13 +210,22 @@ export default function MusicPlayer() {
           {/* Cerrar */}
           <button
             onClick={togglePlayer}
-            className="absolute top-2 right-2 inline-flex items-center justify-center p-2 rounded-full bg-white/10 hover:bg-white/20 z-10 leading-none"
+            className="absolute top-2 right-2 flex items-center justify-center p-2 rounded-full bg-white/10 hover:bg-white/20 z-10 leading-none"
             aria-label="Close player"
             type="button"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
-              <path d="M18 6 6 18"></path>
-              <path d="m6 6 12 12"></path>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="w-5 h-5 block"
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
             </svg>
           </button>
 
@@ -202,7 +237,6 @@ export default function MusicPlayer() {
                   <YouTubePlayer
                     videoId={currentTrack.youtubeId}
                     onEnd={nextTrack}
-                    isPlaying={isPlaying}
                     onPlayerReady={handlePlayerReady}
                   />
                 </div>
@@ -220,31 +254,58 @@ export default function MusicPlayer() {
                   {/* Prev */}
                   <button
                     onClick={previousTrack}
-                    className="inline-flex items-center justify-center size-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors leading-none"
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors leading-none"
                     aria-label="Previous track"
                     type="button"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
-                      <path d="m12 19-7-7 7-7"></path>
-                      <path d="m19 19-7-7 7-7"></path>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 block"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m12 19-7-7 7-7" />
+                      <path d="m19 19-7-7 7-7" />
                     </svg>
                   </button>
 
                   {/* Play / Pause */}
                   <button
                     onClick={togglePlayPause}
-                    className="inline-flex items-center justify-center size-14 rounded-full bg-melody-fuchsia text-white hover:bg-melody-fuchsia/90 transition-colors leading-none"
+                    className="flex items-center justify-center w-14 h-14 rounded-full bg-melody-fuchsia text-white hover:bg-melody-fuchsia/90 transition-colors leading-none"
                     aria-label={isPlaying ? "Pause" : "Play"}
                     type="button"
                   >
                     {isPlaying ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
-                        <rect x="6" y="4" width="4" height="16"></rect>
-                        <rect x="14" y="4" width="4" height="16"></rect>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="w-6 h-6 block"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="6" y="4" width="4" height="16" />
+                        <rect x="14" y="4" width="4" height="16" />
                       </svg>
                     ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block -translate-x-[0.5px]">
-                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="w-6 h-6 block"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polygon points="5 3 19 12 5 21 5 3" />
                       </svg>
                     )}
                   </button>
@@ -252,13 +313,22 @@ export default function MusicPlayer() {
                   {/* Next */}
                   <button
                     onClick={nextTrack}
-                    className="inline-flex items-center justify-center size-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors leading-none"
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors leading-none"
                     aria-label="Next track"
                     type="button"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
-                      <path d="m5 19 7-7-7-7"></path>
-                      <path d="m12 19 7-7-7-7"></path>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 block"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m5 19 7-7-7-7" />
+                      <path d="m12 19 7-7-7-7" />
                     </svg>
                   </button>
                 </div>
