@@ -31,7 +31,7 @@ export function useVideoLoader({
       if (video.paused) {
         video.load();
         const playPromise = video.play();
-        
+
         if (playPromise !== undefined) {
           playPromise.catch(error => {
             // Auto-play was prevented
@@ -48,6 +48,12 @@ export function useVideoLoader({
         }
       }
     };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        loadVideo();
+      }
+    };
     
     // Load video immediately
     loadVideo();
@@ -58,11 +64,7 @@ export function useVideoLoader({
     
     // iOS Safari specific events
     if (isMobileIOS) {
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          loadVideo();
-        }
-      });
+      document.addEventListener('visibilitychange', handleVisibilityChange);
     }
 
     // Clean up
@@ -70,7 +72,7 @@ export function useVideoLoader({
       video.removeEventListener('loadeddata', loadVideo);
       video.removeEventListener('canplay', loadVideo);
       if (isMobileIOS) {
-        document.removeEventListener('visibilitychange', loadVideo);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
       }
     };
   }, [isMobile, isMobileIOS, videoSrc]);
