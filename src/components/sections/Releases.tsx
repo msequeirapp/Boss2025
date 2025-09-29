@@ -91,13 +91,14 @@ export default function Releases() {
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-                <div className="lg:col-span-3">
-                  <div className="youtube-container shadow-xl shadow-black/30 rounded-lg overflow-hidden">
-                    <iframe 
-                      src={`https://www.youtube.com/embed/${videos[0].id}?si=bS0N7HNSw2W--R0f`} 
+                <div className="lg:col-span-3 flex justify-center">
+                  <div className="relative aspect-video w-full max-w-4xl overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/30">
+                    <iframe
+                      className="absolute inset-0 h-full w-full"
+                      src={`https://www.youtube.com/embed/${videos[0].id}?si=bS0N7HNSw2W--R0f`}
                       title="YouTube video player"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin" 
+                      referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
                     ></iframe>
                   </div>
@@ -141,15 +142,16 @@ export default function Releases() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 {videos.slice(1).map((video, index) => (
-                  <div key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-colors">
-                    <div className="youtube-container">
-                      <iframe 
-                        src={`https://www.youtube.com/embed/${video.id}?si=bS0N7HNSw2W--R0f`} 
+                  <div key={index} className="flex flex-col bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-colors">
+                    <div className="relative aspect-video w-full overflow-hidden">
+                      <iframe
+                        className="absolute inset-0 h-full w-full"
+                        src={`https://www.youtube.com/embed/${video.id}?si=bS0N7HNSw2W--R0f`}
                         title="YouTube video player"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin" 
+                        referrerPolicy="strict-origin-when-cross-origin"
                         allowFullScreen
                       ></iframe>
                     </div>
