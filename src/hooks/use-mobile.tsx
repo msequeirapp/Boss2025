@@ -35,3 +35,5 @@ export function useMobile() {
     userAgent
   };
 }
+
+export const useIsMobile = () => useMobile().isMobile;
