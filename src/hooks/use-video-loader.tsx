@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useMobile } from './use-mobile';
 
 interface UseVideoLoaderProps {
@@ -20,32 +20,50 @@ export function useVideoLoader({
   playsInline = true
 }: UseVideoLoaderProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { isMobile, isMobileIOS } = useMobile();
+  const { isMobileIOS } = useMobile();
+
+  const handleUserInteraction = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) {
+      return;
+    }
+
+    video.play().catch(() => {
+      // Ignore subsequent autoplay rejections; the user interaction requirement has been satisfied.
+    });
+  }, []);
+
+  const loadVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !video.paused) {
+      return;
+    }
+
+    video.load();
+    const playPromise = video.play();
+
+    if (playPromise === undefined) {
+      return;
+    }
+
+    playPromise.catch(error => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Autoplay prevented:', error);
+      }
+
+      if (isMobileIOS) {
+        document.body.addEventListener('touchstart', handleUserInteraction, { once: true });
+      }
+    });
+  }, [handleUserInteraction, isMobileIOS]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Force video loading for iOS and Android
-    const loadVideo = () => {
-      if (video.paused) {
-        video.load();
-        const playPromise = video.play();
-        
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            // Auto-play was prevented
-            // Show a UI element to let the user manually start playback
-            console.log("Autoplay prevented:", error);
-            
-            // For iOS, add a touch event to start the video
-            if (isMobileIOS) {
-              document.body.addEventListener('touchstart', () => {
-                video.play().catch(e => console.log("Play attempt failed:", e));
-              }, { once: true });
-            }
-          });
-        }
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        loadVideo();
       }
     };
     
@@ -58,11 +76,7 @@ export function useVideoLoader({
     
     // iOS Safari specific events
     if (isMobileIOS) {
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          loadVideo();
-        }
-      });
+      document.addEventListener('visibilitychange', handleVisibilityChange);
     }
 
     // Clean up
@@ -70,10 +84,10 @@ export function useVideoLoader({
       video.removeEventListener('loadeddata', loadVideo);
       video.removeEventListener('canplay', loadVideo);
       if (isMobileIOS) {
-        document.removeEventListener('visibilitychange', loadVideo);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
       }
     };
-  }, [isMobile, isMobileIOS, videoSrc]);
+  }, [isMobileIOS, loadVideo, videoSrc]);
 
   return { videoRef };
 }

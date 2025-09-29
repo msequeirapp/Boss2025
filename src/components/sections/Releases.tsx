@@ -5,42 +5,57 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLang } from "@/hooks/use-language";
 
 // YouTube video IDs
-const videos = [
+interface VideoItem {
+  id: string;
+  title: string;
+  artist: string;
+  featured?: boolean;
+  description?: string;
+}
+
+const videos: VideoItem[] = [
+  {
+    id: "0yzvfoxN6tM",
+    title: "Boss of Melody - Latest Release",
+    artist: "Boss of Melody",
+    featured: true,
+    description:
+      "La mezcla perfecta de ritmo y flow: disfruta del nuevo lanzamiento en alta definición en cualquier dispositivo."
+  },
   {
     id: "YFr3jqDky7w",
     title: "Boss of Melody Demo",
-    artist: "Boss of Melody",
-    featured: true
+    artist: "Boss of Melody"
   },
-  { 
-    id: "gb-FyFOzcQw", 
-    title: "BORRACHITA", 
-    artist: "Boss of Melody" 
+  {
+    id: "gb-FyFOzcQw",
+    title: "BORRACHITA",
+    artist: "Boss of Melody"
   },
-  { 
-    id: "JmMFXidL_6k", 
-    title: "Mi Angel", 
-    artist: "Boss of Melody" 
+  {
+    id: "JmMFXidL_6k",
+    title: "Mi Angel",
+    artist: "Boss of Melody"
   },
-  { 
-    id: "3XOAZSER5YY", 
-    title: "SUELTA EL DANCEHALL", 
-    artist: "Boss of Melody" 
+  {
+    id: "3XOAZSER5YY",
+    title: "SUELTA EL DANCEHALL",
+    artist: "Boss of Melody"
   },
-  { 
-    id: "i6GNxQzpQFc", 
-    title: "Click Clack", 
-    artist: "Boss of Melody" 
+  {
+    id: "i6GNxQzpQFc",
+    title: "Click Clack",
+    artist: "Boss of Melody"
   },
-  { 
-    id: "sDLH2cgmLbw", 
-    title: "SANTADIABLA", 
-    artist: "Boss of Melody" 
+  {
+    id: "sDLH2cgmLbw",
+    title: "SANTADIABLA",
+    artist: "Boss of Melody"
   },
-  { 
-    id: "Tom-_Kfs1gk", 
-    title: "Rumbear Tomar Y Bailar", 
-    artist: "Boss of Melody" 
+  {
+    id: "Tom-_Kfs1gk",
+    title: "Rumbear Tomar Y Bailar",
+    artist: "Boss of Melody"
   }
 ];
 
@@ -50,6 +65,9 @@ export default function Releases() {
   const { translations } = useLang();
   const t = translations.releases;
   
+  const featuredVideo = videos.find((video) => video.featured) ?? videos[0];
+  const additionalVideos = videos.filter((video) => video.id !== featuredVideo.id);
+
   return (
     <section id="releases" className="py-20 lg:py-32 bg-melody-dark relative overflow-hidden">
       {/* Background elements */}
@@ -90,26 +108,36 @@ export default function Releases() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
-                <div className="lg:col-span-3">
-                  <div className="youtube-container shadow-xl shadow-black/30 rounded-lg overflow-hidden">
-                    <iframe 
-                      src={`https://www.youtube.com/embed/${videos[0].id}?si=bS0N7HNSw2W--R0f`} 
-                      title="YouTube video player"
+              <div className="grid grid-cols-1 xl:grid-cols-5 gap-10 items-stretch">
+                <div className="xl:col-span-3 flex justify-center">
+                  <div className="relative aspect-video w-full max-w-4xl overflow-hidden rounded-3xl border border-white/10 shadow-2xl shadow-black/30 bg-black">
+                    <iframe
+                      className="absolute inset-0 h-full w-full"
+                      src={`https://www.youtube.com/embed/${featuredVideo.id}?si=bS0N7HNSw2W--R0f`}
+                      title={`${featuredVideo.title} — YouTube player`}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin" 
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      loading="lazy"
                       allowFullScreen
                     ></iframe>
                   </div>
                 </div>
-                
-                <div className="lg:col-span-2">
-                  <div className="p-4">
+
+                <div className="xl:col-span-2">
+                  <div className="p-6 lg:p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm flex flex-col gap-6 h-full">
                     <span className="inline-block py-1 px-3 rounded-full bg-white/10 text-xs font-medium mb-3">FEATURED RELEASE</span>
-                    <div className="flex flex-col sm:flex-row gap-4 mt-2">
-                      <Button 
+                    <div className="space-y-3">
+                      <h3 className="text-2xl lg:text-3xl font-semibold leading-tight text-white">{featuredVideo.title}</h3>
+                      {featuredVideo.description ? (
+                        <p className="text-white/60 text-base">{featuredVideo.description}</p>
+                      ) : null}
+                      <p className="text-white/40 text-sm uppercase tracking-wide">{featuredVideo.artist}</p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:items-center mt-auto">
+                      <Button
                         className="bg-white hover:bg-white/90 text-black"
-                        onClick={() => window.open(`https://www.youtube.com/watch?v=${videos[0].id}`, '_blank')}
+                        onClick={() => window.open(`https://www.youtube.com/watch?v=${featuredVideo.id}`, "_blank", "noopener,noreferrer")}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
                           <circle cx="12" cy="12" r="10"></circle>
@@ -117,10 +145,10 @@ export default function Releases() {
                         </svg>
                         Watch Video
                       </Button>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="border-white/20 hover:border-white hover:bg-white/10"
-                        onClick={() => window.open('https://open.spotify.com/artist/0wU7V7mwjwQlLiXJF5i7XW?si=fkcFgT9nRuKf0pcow8T84w', '_blank')}
+                        onClick={() => window.open('https://open.spotify.com/artist/0wU7V7mwjwQlLiXJF5i7XW?si=fkcFgT9nRuKf0pcow8T84w', '_blank', 'noopener,noreferrer')}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
                           <path d="M9 18V5l12-2v13"></path>
@@ -141,21 +169,23 @@ export default function Releases() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {videos.slice(1).map((video, index) => (
-                  <div key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition-colors">
-                    <div className="youtube-container">
-                      <iframe 
-                        src={`https://www.youtube.com/embed/${video.id}?si=bS0N7HNSw2W--R0f`} 
-                        title="YouTube video player"
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                {additionalVideos.map((video) => (
+                  <div key={video.id} className="flex flex-col bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden hover:border-white/30 transition-all duration-300">
+                    <div className="relative aspect-video w-full overflow-hidden bg-black">
+                      <iframe
+                        className="absolute inset-0 h-full w-full"
+                        src={`https://www.youtube.com/embed/${video.id}?si=bS0N7HNSw2W--R0f`}
+                        title={`${video.title} — YouTube player`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin" 
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        loading="lazy"
                         allowFullScreen
                       ></iframe>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-lg mb-1">{video.title}</h3>
-                      <p className="text-white/70 text-sm">{video.artist}</p>
+                    <div className="p-5 lg:p-6 space-y-2">
+                      <h3 className="font-semibold text-lg lg:text-xl text-white">{video.title}</h3>
+                      <p className="text-white/60 text-sm">{video.artist}</p>
                     </div>
                   </div>
                 ))}
