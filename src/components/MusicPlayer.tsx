@@ -92,7 +92,9 @@ const YouTubePlayer = ({
       try {
         playerRef.current?.setPlaybackQuality("highres");
         playerRef.current?.setPlaybackQuality("hd1080");
-      } catch {}
+      } catch {
+        // YouTube may reject unsupported playback-quality settings; keep playback working.
+      }
     };
 
     const initPlayer = async () => {
